@@ -1,0 +1,17 @@
+version: "3.9"
+services:
+ web:
+  image: nginx:1.21.6-alpine
+  ports:
+   - "80:80"
+  volumes:
+   - ./code:/code
+   - ./nginx.conf/site.conf:/etc/nginx/conf.d/site.conf
+   - ./nginx.conf/default.conf:/etc/nginx/conf.d/default.conf
+  links:
+   - php
+ php:
+  build: ./dockerfiles/php/
+  volumes:
+   - ./code:/code
+

@@ -3,7 +3,8 @@ services:
  web:
   image: nginx:1.21.6-alpine
   ports:
-   - "80:80"
+  # - "80:80"
+   - 8089:80
   volumes:
    - ./code:/code
    - ./nginx.conf/site.conf:/etc/nginx/conf.d/site.conf
@@ -14,4 +15,3 @@ services:
   build: ./dockerfiles/php/
   volumes:
    - ./code:/code
-

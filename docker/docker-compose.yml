@@ -3,15 +3,31 @@ services:
  web:
   image: nginx:1.21.6-alpine
   ports:
-  # - "80:80"
-   - 8089:80
-  volumes:
-   - ./code:/code
-   - ./nginx.conf/site.conf:/etc/nginx/conf.d/site.conf
-   - ./nginx.conf/default.conf:/etc/nginx/conf.d/default.conf
+   - "80:80"
+#  volumes:
+#   - ./code:/code
+#   - ./nginx.conf/site.conf:/etc/nginx/conf.d/site.conf
+#   - ./nginx.conf/default.conf:/etc/nginx/conf.d/default.conf
   links:
    - php
+  networks:
+   dockervlan:
+    ipv4_address: 192.168.0.20
  php:
   build: ./dockerfiles/php/
   volumes:
    - ./code:/code
+  networks:
+   dockervlan:
+    ipv4_address: 192.168.0.21
+networks:
+ dockervlan:
+  name: dockervlan
+  driver: macvlan
+  driver_opts:
+   parent: bond0
+  ipam:
+   config:
+    - subnet: "192.168.0.0/20"
+      gateway: "192.168.0.1"
+
